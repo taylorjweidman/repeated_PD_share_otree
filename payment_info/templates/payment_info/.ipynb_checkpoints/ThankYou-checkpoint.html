@@ -1,0 +1,26 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Thank you!
+{% endblock %}
+
+{% block content %}
+
+    <div class="panel panel-default" style="margin-bottom:10px">
+        <div class="panel-body">
+            <p> Please remain seated until your number is called. Once you're called, take your slip of paper and all your belongings and proceed to the cashier.</p>
+            <table class="table text-center" style="width: auto; margin: auto">
+                <tr>
+                    <th style="border-top:solid 1px #ffffff">Redemption Code</th>
+                </tr>
+                <tr>
+                    <th style="border-bottom:solid 1px #E8E8E8">{{redemption_code}}</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+{% endblock %}
+

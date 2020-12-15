@@ -1,0 +1,42 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Thank you!
+{% endblock %}
+
+{% block content %}
+
+    <div class="panel panel-default" style="margin-bottom:10px">
+        <div class="panel-body">
+            <p>Thank you for participating in this study. <b>Cycle {{payment_cycle}}</b> from <b>Part {{payment_part}}</b> has been randomly chosen for payment. In this cycle, <b>Round {{cycle_round}}</b> counts toward payment, earning you <b>{{payoff}}</b>. Therefore, including your participation fee of $6, your total payoff is <b>{{ total_payoff }}</b>. </p>
+            <table class="table text-center" style="width: auto; margin: auto">
+                <tr>
+                    <th style="border-top:solid 1px #ffffff"><span>Part</span></th>
+                    <th style="border-top:solid 1px #ffffff"><span>Cycle</span></th>
+                    <th style="border-top:solid 1px #ffffff"><span>Final Round</span></th>
+                    <th style="border-top:solid 1px #ffffff">Payoff</th>
+                    <th style="border-top:solid 1px #ffffff">Participation Fee</th>
+                    <th style="border-top:solid 1px #ffffff">Total Payoff</th>
+                    <th style="border-top:solid 1px #ffffff">Redemption Code</th>
+                </tr>
+                <tr>
+                    <th style="border-bottom:solid 1px #E8E8E8"><span>{{payment_part}}</span></th>
+                    <th style="border-bottom:solid 1px #E8E8E8"><span>{{payment_cycle}}</span></th>
+                    <th style="border-bottom:solid 1px #E8E8E8"><span>{{cycle_round}}</span></th>
+                    <th style="border-bottom:solid 1px #E8E8E8">{{payoff}}</th>
+                    <th style="border-bottom:solid 1px #E8E8E8">$6.00</th>
+                    <th style="border-bottom:solid 1px #E8E8E8">{{total_payoff}}</th>
+                    <th style="border-bottom:solid 1px #E8E8E8">{{redemption_code}}</th>
+                </tr>
+            </table>
+            <p>  As you review you payment, you will find a receipt and a slip of paper on the shelf at your caroll. Fill out your receipt and write your redemption code on the slip of paper. Once you are finished reviewing your payment and filling out these papers, please click the button to continue. </p>
+        </div>
+    </div>
+
+<div align="left">
+    <button class="btn btn-primary"> Click once you have filled out your receipt </button>
+</div>
+
+{% endblock %}
+

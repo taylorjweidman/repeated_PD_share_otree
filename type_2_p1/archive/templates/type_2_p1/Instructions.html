@@ -1,0 +1,71 @@
+{% load otree static %}
+
+<div class="card bg-light instructions">
+    <div class="card-body">
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+
+    <p>
+        Each <b>Round</b> you and the other participants in your group will participate in a grouptask. You and the other participants are given the choice to either contribute high <b>H</b> or low <b>L</b> effort.  Whether you receive the high or the low reward depends only on the actions of the others in your group. Additionally, whether you incur an effort costdepends only on whether you choose <b>H</b> or <b>L</b>. The payoffs of the other participants inyour group are determined in the same way: whether they receive the high or the low reward depends only on the actions of the others in their group, and their effort cost depends only on their choice. If all other participants in your group contribute <b>H</b>, you receive a high reward <b>{{ Constants.high_reward }}</b>. If one or more participants in your group choose <b>L</b>, you receive a low reward <b>{{ Constants.low_reward }}</b>. If you choose <b>H</b>, you incur an effort costs of <b>{{ Constants.effort_cost }}</b>. If you choose <b>L</b>, you incur no effort cost.
+    </p>
+        
+    <hr>
+    
+    <p>
+        <b>Example 1.</b> If you choose high effort, <b>H</b>, and all other participants choose high effort, <b>H</b>, you receive the high reward, <b>{{ Constants.high_reward }}</b>, and incur an effort cost, <b>{{ Constants.effort_cost }}</b>. Therefore, your payoff and the other participants payoffs this <b>Round</b> would be <b>{{ Constants.high_reward }} - {{ Constants.effort_cost }} = {{ Constants.cooperate_payoff }}</b>.
+    </p>
+    
+    <hr>    
+    
+    <p>
+        <b>Example 2.</b> If you choose high effort, <b>H</b>, and at least one other participants chooseslow effort,<b>L</b>, you receive the low reward, <b>{{ Constants.low_reward }}</b>, and incur an effort cost, <b>{{ Constants.effort_cost }}</b>. Therefore, your payoff this <b>Round</b> would be <b>{{ Constants.low_reward }} - {{ Constants.effort_cost }} = {{ Constants.betrayed_payoff }}</b>.
+    </p>
+        
+    <hr>
+
+    <p>
+        <b>Example 3.</b> If you choose low effort, <b>L</b>, and all other participants choose high effort, <b>H</b>, you receive the high reward, <b>{{ Constants.high_reward }}</b>, and do not incur an effort cost. Therefore, your payoff this <b>Round</b> would be <b>{{ Constants.betray_payoff }}</b>, and all other participants payoffs this <b>Round</b> would be <b>{{ Constants.low_reward }} − {{ Constants.effort_cost }} = {{ Constants.betrayed_payoff }}</b>.
+    </p>
+    
+    <hr>
+    
+    <p>
+        <b>Example 4.</b> If you choose low effort, <b>L</b>, and all other participants choose low effort, <b>L</b>, you receive the low reward, <b>{{ Constants.low_reward }}</b>, and do not incur an effort cost. Therefore, your payoff and all other participants' payoffs this <b>Round</b> would be <b>{{ Constants.defect_payoff }}</b>. 
+    </p>
+        
+    <hr>
+        
+    <p>
+        <b>Payoff Table.</b> These examples are summarized in the following payoff table:
+    </p>
+
+    <table class='table table-bordered text-center'
+           style='width: auto; margin: auto'>
+        <tr>
+            <th colspan=2 rowspan=2></th>
+            <th colspan=2>The Other Participant</th>
+        </tr>
+        <tr>
+            <th>L</th>
+            <th>H</th>
+        </tr>
+        <tr>
+            <th rowspan=2><span class="rotate90">You</span></th>
+            <th>L</th>
+            <td>{{ Constants.cooperate_payoff }}, {{ Constants.cooperate_payoff }}</td>
+            <td>{{ Constants.betrayed_payoff }}, {{ Constants.betray_payoff }}</td>
+        </tr>
+        <tr>
+            <th>H</th>
+            <td>{{ Constants.betray_payoff }}, {{ Constants.betrayed_payoff }}</td>
+            <td>{{ Constants.defect_payoff }}, {{ Constants.defect_payoff }}</td>
+        </tr>
+    </table>
+    
+    <p>
+        In this table, the first row represents you choosing high effort and the second rowrepresents you choosing low effort. The first column represents all other participants choosing a high effort and the second column represents not all other participants choosing high effort. To find your payoff in the payoff table, find the row correspondingto your choice and find the column representing the other participants choices, and find where they intersect. For example, if you choose low effort and all other participants chose high effort, then your payoff would be <b>{{ Constants.betray_payoff }}</b>.
+    </p>
+
+</div>
+</div>

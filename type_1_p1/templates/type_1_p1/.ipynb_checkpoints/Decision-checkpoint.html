@@ -1,0 +1,184 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'global/matrix.css' %}" />
+
+    <style>
+        .highlight-row-on-hover:hover td {
+            background-color: #fcf8e3;
+        }
+        .red {background-color: #f66666;}
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+<head><h1 align="center" >Part: 1 - Cycle: {{cycle}} - Round: {{round}}</h1></head>
+
+<hr>
+
+<div class="container">
+    <div style="float:left;width:55%">
+        <table class="table table-bordered text-center" style="width: auto; margin: auto">
+        <tr>
+            <th colspan="6" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff"><span><h3>Past Round Outcomes</h3></th>
+        </tr>
+            
+        <tr>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff"><span>Round</span></th>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Your Action</th>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Other's Action</th>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Your Payoff</th>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Die Roll</th>
+        </tr>
+        
+        {% for p in player_in_all_rounds %}
+            <tr>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.p1_round}}</td>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.decision}}</td>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.other_decision}}</td>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.payoff}}</td>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.die_roll}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+
+    <div style="float:center;width:5%">
+    </div>
+    
+    <div class="form-group required" style="float:right;width:45%">
+        <table class="table table-bordered text-center" style="width: auto; margin: auto">
+            <tr>
+                <th colspan="4" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff"><span><h3>Current Round Decisions</h3></th>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="border-left:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-right:solid 1px #ffffff"><span style="font-weight:normal"><i> Please select from the payoff matrix below. </i></span></th>
+            </tr>
+            
+            <tr>
+                <th colspan="2" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-right:solid 1px #ffffff"></th>
+                <th colspan="2" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Other Participant's Action</th>
+            </tr>
+              
+            <tr>
+                <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-right:solid 1px #ffffff"></th>
+                <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff"></th>
+                <th style="color:green; border-top:solid 1px #E8E8E8; border-bottom:solid 1px #E8E8E8; border-left:solid 1px #E8E8E8">Green</th>
+                <th style="color:red">Red</th>
+            </tr>
+              
+            <th rowspan="2" valign="bottom" style="border-top:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-left:solid 1px #ffffff">You</th>
+            <tr class="highlight-row-on-hover">
+                    <div>
+                        <td onmouseover="" style="color:green; cursor:pointer;" id="Green1" onclick="colorGreen();"><b>Green</b></td>
+                    </div>
+                
+                <td class="highlight-row-on-hover" onmouseover="" style="cursor: pointer;" id="Green2" onclick="colorGreen()">{{Constants.cooperate_payoff}}</td>
+                <td class="highlight-row-on-hover" onmouseover="" style="cursor: pointer;" id="Green3" onclick="colorGreen()">{{ Constants.betrayed_payoff }}</td>
+            </tr>
+            
+            <th rowspan="2" valign="middle" style="border-top:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-left:solid 1px #ffffff"></th>
+            <tr class="highlight-row-on-hover" onmouseover="" style="cursor: pointer;">
+                    <div>
+                        <td style="color:red; " id="Red1" onclick="colorRed();"><b>Red</b></td>
+                    </div>
+                <td id="Red2" onclick="colorRed();">{{Constants.betray_payoff}}</td>
+                <td id="Red3" onclick="colorRed();">{{Constants.defect_payoff}}</td>
+            </tr>
+        </table>
+    </div>
+<div style="clear:both; font-size:1px;"></div>
+</div>
+
+<div align="center" id="confirmGreen" style="display:none; float:right; width:35%">
+    <button name="decision" value="Green" class="btn btn-primary"> Confirm Green</button>
+</div>
+
+<div align="center" id="confirmRed" style="display:none; float:right; width:35%">
+    <button name="decision" value="Red" class="btn btn-primary"> Confirm Red</button>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+function applyGreen(el){
+    el.style.backgroundColor = "#d9f2d9";
+    }
+function applyRed(el){
+    el.style.backgroundColor = "#ffd6cc";
+    }
+function removeColor(el){
+    el.style.backgroundColor = "#ffffff";
+    }
+
+function colorGreen(){
+    var el1 = document.getElementById("Green1");
+    var el2 = document.getElementById("Green2");
+    var el3 = document.getElementById("Green3");
+    applyGreen(el1)
+    applyGreen(el2)
+    applyGreen(el3)
+    hide_confirmRed()
+    show_confirmGreen()
+    var el4 = document.getElementById("Red1");
+    var el5 = document.getElementById("Red2");
+    var el6 = document.getElementById("Red3");
+    removeColor(el4)
+    removeColor(el5)
+    removeColor(el6)
+    }
+
+function colorRed(){
+    var el1 = document.getElementById("Red1");
+    var el2 = document.getElementById("Red2");
+    var el3 = document.getElementById("Red3");
+    applyRed(el1)
+    applyRed(el2)
+    applyRed(el3)
+    hide_confirmGreen()
+    show_confirmRed()
+    var el4 = document.getElementById("Green1");
+    var el5 = document.getElementById("Green2");
+    var el6 = document.getElementById("Green3");
+    removeColor(el4)
+    removeColor(el5)
+    removeColor(el6)
+    }
+
+function hide_confirmGreen()
+    {var div = document.getElementById("confirmGreen");
+        if (div.style.display == "block") {
+            div.style.display = "none";}
+        }
+function hide_confirmRed()
+    {var div = document.getElementById("confirmRed") ;
+        if (div.style.display == "block") {
+            div.style.display = "none";}
+        }
+function show_confirmGreen()
+    {var div = document.getElementById("confirmGreen");
+        if (div.style.display == "none") {
+            div.style.display = "block";}
+        }
+function show_confirmRed()
+    {var div = document.getElementById("confirmRed") ;
+        if (div.style.display == "none") {
+            div.style.display = "block";}
+        }
+function groupGreen()
+    {show_confirmGreen();
+     hide_confirmRed()
+        }
+function groupRed()
+    {hide_confirmGreen();
+     show_confirmRed();
+        }
+</script>
+{% endblock %}

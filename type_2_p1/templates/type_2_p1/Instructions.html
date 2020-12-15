@@ -1,0 +1,174 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Instructions
+{% endblock %}
+
+{% block content %}
+
+<div class="card bg-light instructions">
+<div class="card-body">
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+    
+    <h2>Welcome</h2>
+
+    <p>
+        You are about to participate in a study on decision-making. What you earn depends on your decisions, and the decisions of others in this room. Please turn off your cell phones and any similar devices now. Please do not talk or in any way try to communicate with other participants. We will start with a brief instruction period. During the instruction period you will be given a description of the main features of the study. If you have any questions during this period, raise your and and your question will be answered in private at your computer carrel.
+    </p>
+    
+</div>
+</div>
+
+<div class="card bg-light instructions">
+<div class="card-body">
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+    
+    <h2>Study Organization & Payment </h2>
+        
+    <ul> 
+        <li>This study has two Parts, where each part has 10 decision-making <b>Cycles</b>. Each cycle consists of a random number of <b>Rounds</b> where you make decisions. </li>
+        <li> At the end of the study, one of the two Parts will be selected for payment with equal probability. For the selected Part, one of the 10 Cycles will be randomly selected for payment. Your payment for this randomly selected Cycle will be based on your decision's in that Cycle's last Round. </li>
+        <li>The number of <b>Rounds</b> in each <b>Cycle</b> is random, where only the last Round in each Cycle counts for payment. Which Round is the last is determined as follows:
+            <ul>
+                <li>In every Round, after participants make their decisions, the computer will roll a fair 100-sided die. If the die roll is greater than 75 (so 76-100) the round just completed is the one that is used to determine the current Cycle's payment, and the Cycle ends. If instead the computer’s roll is less than 75 (so 1–75) then the Cycle continues into another Round. </li>
+                <li>Because of this rule, after every Round decision there is a 25 percent chance that the current Round is the ones that count for the Cycle’s payment, and a75 percent chance that the Cycle continues and the decisions in a subsequent round will count for that Cycle payment.</li>
+            </ul>
+        <li>Your final payment for the study will be made up of a $6 participation fee, and your payment from the last Round in the randomly selected Cycle</li>
+    </ul>
+    
+</div>
+</div>
+
+<div class="card bg-light instructions">
+<div class="card-body">
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+    
+    <h2>Part 1 </h2>
+        
+    <ul>
+        <li>In the first part of the study you will make decisions in 10 Cycles. In each Cycle you will be repeatedly matched with a group of three other participants in the room for a sequence of <b>Rounds</b>. You will interact with the same group of three other participants in all rounds in the cycle. </li>
+        <li>Once a Cycle is completed, you will be randomly matched to a new group of three participants for the next Cycle. </li>
+        <li>While the specific participants you are matched to is fixed across all Rounds of a Cycle, the computer interface in which you make your decisions is anonymous, so you will never find out which participants in the room you interacted with in a particular Cycle, nor will others be able tofind out that they interacted with you. </li>
+    </ul>    
+</div>
+</div>
+
+
+<div class="card bg-light instructions">
+<div class="card-body">
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+    
+    <h2>Round Choices and Payoffs </h2>
+    
+    <p>
+        For each Round in each Cycle, you and the matched participants in your group will make simultaneous choices. All four of you must choose between either the <b>Green</b> action or the <b>Red</b> action. After you and the other three participants have made your choices, you will be given feedback on the other participants' choices that Round, alongside the Computer’s die roll to determine if that Round counts for the Cycle payment.
+    </p>
+    <p>
+        If a particular Round is the Cycle’s last, and that Cycle is the one selected for final payment, there are four possible payoff outcomes.
+    </p>
+        
+    <ul>
+        <li> If both you and all three of the other participants choose the Green action, you get a round payoff of {{Constants.cooperate_payoff}}. </li>
+        <li> If you choose the Green action and any of the other participants chooses Red, you get a round payoff of {{ Constants.betrayed_payoff }}. </li>
+        <li> If you choose the Red action and all three other participants choose Green, you get a round payoff of {{Constants.betray_payoff}}. </li>
+        <li> If both you and any of the other three participants choose the Red action, you get a round payoff of {{Constants.defect_payoff}}. </li>
+    </ul>
+    
+    <p>
+        <b>Round Payoff Table.</b> These payoffs are summarized in the following payoff table:
+    </p>
+
+
+    <table class="table table-bordered text-center" style="width: auto; margin: auto">
+            <tr>
+
+            
+            <tr>
+                <th colspan="2" style="border-top:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8; border-bottom:solid 1px #F8F8F8; border-right:solid 1px #F8F8F8"></th>
+                <th colspan="2" style="border-top:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8; border-right:solid 1px #F8F8F8">Other Participants' Actions</th>
+            </tr>
+              
+            <tr>
+                <th style="border-top:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8; border-bottom:solid 1px #F8F8F8; border-right:solid 1px #F8F8F8"></th>
+                <th style="border-top:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8"></th>
+                <th style="color:green; border-top:solid 1px #E8E8E8; border-bottom:solid 1px #E8E8E8; border-left:solid 1px #E8E8E8">All 3 Green</th>
+                <th style="color:red">Any of 3 Red</th>
+            </tr>
+              
+            <th rowspan="2" valign="bottom" style="border-top:solid 1px #F8F8F8; border-bottom:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8">Your Action</th>
+            <tr>
+                    <div>
+                        <td style="color:green" id="Green1"><b>Green</b></td>
+                    </div>
+                
+                <td id="Green2">{{Constants.cooperate_payoff}}</td>
+                <td id="Green3">{{ Constants.betrayed_payoff }}</td>
+            </tr>
+            
+            <th rowspan="2" valign="middle" style="border-top:solid 1px #F8F8F8; border-bottom:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8"></th>
+            <tr>
+                    <div>
+                        <td style="color:red; " id="Red1" ><b>Red</b></td>
+                    </div>
+                <td id="Red2">{{Constants.betray_payoff}}</td>
+                <td id="Red3">{{Constants.defect_payoff}}</td>
+            </tr>
+    </table>
+
+</div>
+</div>
+
+<div class="card bg-light instructions">
+<div class="card-body">
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+    
+    <h2>Some examples of these payoffs: </h2>
+
+    <p>
+        <b>Case 1.</b> Suppose you choose Green and all three of the other participants in the Cycle also choose Green. If that Round is the final one in the Cycle all four of you would get a payoff of {{Constants.cooperate_payoff}}.
+    </p>
+        
+    <p>
+        <b>Case 2.</b> Suppose you and two of the other participants choose Green while the other participant chooses Red. If that Round is the final one in the Cycle you and the other two participants who chose Green would get a payoff of {{Constants.betrayed_payoff}}, while the other participant would get a payoff of {{Constants.betray_payoff}}.
+    </p>
+
+    <p>
+        <b>Case 3.</b> Suppose you choose Red while all three of the other participants choose Green. You would get a Round payoff of {{Constants.betray_payoff}}, while the other three participants would get a Round payoff of {{ Constants.betrayed_payoff }}.
+    </p>
+    
+    <p>
+        <b>Case 4.</b> Suppose you and another participant choose Red while the other two participants choose Green. If that Round is the final one in the Cycle you and the other participant that chose Red would get a payoff of {{Constants.defect_payoff}}, while the other two participants would get a payoff of {{ Constants.betrayed_payoff }}.  
+    </p>
+
+</div>
+</div>
+
+<div class="card bg-light instructions">
+<div class="card-body">
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+    
+    <h2>Part 2 </h2>
+
+    <p>
+        After Part 1 is concluded, you will be given instructions on Part 2, which will have a similar structure to the task in Part 1.
+    </p>
+
+</div>
+</div>
+
+{% next_button %}
+
+{% endblock %}

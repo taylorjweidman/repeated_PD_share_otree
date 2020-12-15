@@ -1,0 +1,66 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Part 2 Instructions
+{% endblock %}
+
+{% block content %}
+
+<div class="card bg-light instructions">
+<div class="card-body">
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+    
+    <p>
+        Part 2 is identical to Part 1. In each of the 10 Cycles in Part 2 you will again be matched to three other participants in the room.
+    </p>
+    
+    <p>
+        Similar to Part 1, the Cycle payoff is determined by the last round in the Cycle, where the payoff depends on the action you chose and the actions chosen by the three matched participants for that Cycle. Similar to Part 1, the below Table summarizes the payoff based upon the choices made in the Cycle’s last round.
+    </p>
+    
+    <table class="table table-bordered text-center" style="width: auto; margin: auto">
+            <tr>
+
+            
+            <tr>
+                <th colspan="2" style="border-top:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8; border-bottom:solid 1px #F8F8F8; border-right:solid 1px #F8F8F8"></th>
+                <th colspan="2" style="border-top:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8; border-right:solid 1px #F8F8F8">Other Participants' Actions</th>
+            </tr>
+              
+            <tr>
+                <th style="border-top:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8; border-bottom:solid 1px #F8F8F8; border-right:solid 1px #F8F8F8"></th>
+                <th style="border-top:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8"></th>
+                <th style="color:green; border-top:solid 1px #E8E8E8; border-bottom:solid 1px #E8E8E8; border-left:solid 1px #E8E8E8">All 3 Green</th>
+                <th style="color:red">Any of 3 Red</th>
+            </tr>
+              
+            <th rowspan="2" valign="bottom" style="border-top:solid 1px #F8F8F8; border-bottom:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8">Your Action</th>
+            <tr>
+                    <div>
+                        <td style="color:green" id="Green1"><b>Green</b></td>
+                    </div>
+                
+                <td id="Green2">{{Constants.cooperate_payoff}}</td>
+                <td id="Green3">{{ Constants.betrayed_payoff }}</td>
+            </tr>
+            
+            <th rowspan="2" valign="middle" style="border-top:solid 1px #F8F8F8; border-bottom:solid 1px #F8F8F8; border-left:solid 1px #F8F8F8"></th>
+            <tr>
+                    <div>
+                        <td style="color:red; " id="Red1" ><b>Red</b></td>
+                    </div>
+                <td id="Red2">{{Constants.betray_payoff}}</td>
+                <td id="Red3">{{Constants.defect_payoff}}</td>
+            </tr>
+    </table>
+</div>
+</div>
+
+<div align="left">
+    <button class="btn btn-primary"> Please Wait To Click Until Told</button>
+</div>
+
+{% endblock %}

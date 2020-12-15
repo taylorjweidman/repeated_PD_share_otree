@@ -1,0 +1,202 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'global/matrix.css' %}" />
+
+    <style>
+        .highlight-row-on-hover:hover td {
+            background-color: #fcf8e3;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+<head><h1 align="center" >Part: 2 - Cycle: {{cycle}} - Round: {{round}}</h1></head>
+
+<hr>
+
+<div class="container">
+    <div style="float:left;width:55%">
+        <table class="table table-bordered text-center" style="width: auto; margin: auto">
+        <tr>
+            <th colspan="6" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff"><span><h3>Past Round Outcomes</h3></th>
+        </tr>
+            
+        <tr>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff"><span>Round</span></th>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Your Action</th>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Other's Action</th>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Your Payoff</th>
+            <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Die Roll</th>
+        </tr>
+        
+        {% for p in player_in_all_rounds %}
+            <tr id={{p.p2_round}}>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.p2_round}}</td>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.decision}}</td>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.other_decision}}</td>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.payoff}}</td>
+                <td style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">{{p.die_roll}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+
+    <div style="float:center;width:5%">
+    </div>
+    
+    <div class="form-group required" style="float:right;width:45%">
+        <table class="table table-bordered text-center" style="width: auto; margin: auto">
+            <tr>
+                <th colspan="4" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff"><span><h3>Current Round Decisions</h3></th>
+            </tr>
+            
+            <tr>
+                <th colspan="2" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-right:solid 1px #ffffff"></th>
+                <th colspan="2" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">Other Participant's Action</th>
+            </tr>
+            
+            <tr>
+                <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-right:solid 1px #ffffff"></th>
+                <th style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff"></th>
+                <th id="OGreen1" style="color:green; border-top:solid 1px #E8E8E8; border-bottom:solid 1px #E8E8E8; border-left:solid 1px #E8E8E8">Green</th>
+                <th id="ORed1" style="color:red">Red</th>
+            </tr>
+
+            <th rowspan="2" valign="bottom" style="border-top:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-left:solid 1px #ffffff">You</th>
+
+            <tr>
+                <td id="Green1" style="color:green"><b>Green</b></td>
+                <td id="Green2">{{Constants.cooperate_payoff}}</td>
+                <td id="Green3">{{Constants.betrayed_payoff}}</td>
+            </tr>
+
+            <th rowspan="2" valign="middle" style="border-top:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-left:solid 1px #ffffff"></th>
+
+            <tr>
+                <td id="Red1" style="color:red"><b>Red</b></td>
+                <td id="Red2">{{Constants.betray_payoff}}</td>
+                <td id="Red3">{{Constants.defect_payoff}}</td>
+            </tr>
+            
+            <tr> </tr>
+            
+            <tr>
+                <th colspan="4" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff"><span><h3>Die Roll</h3></th>
+            </tr>
+            
+            <tr id="cycle_end" style="display:none">
+                <th colspan="4" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff"><span>The die roll this round, <b>{{die_roll}}</b>, is greater than 75. Therefore, the cycle has ended. </th>
+            </tr>
+            
+            <tr id="cycle_continue" style="display:none">
+                <th colspan="4" style="border-top:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff"><span>The die roll this round, <b>{{die_roll}}</b>, is not greater than 75. Therefore, the cycle continues. </th>
+            </tr>
+            
+            <th colspan="4" style="border-top:solid 1px #ffffff; border-bottom:solid 1px #ffffff; border-left:solid 1px #ffffff; border-right:solid 1px #ffffff">
+                {% next_button %}
+            </th>
+            
+        </table>
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    
+function cycle_end(){
+    if ({{die_roll}} > 75){
+        document.getElementById("cycle_end").style.display = 'table-row';
+    }
+}
+    
+function cycle_continue(){
+    if ({{die_roll}} <= 75){
+        document.getElementById("cycle_continue").style.display = 'table-row';
+    }
+}
+    
+cycle_end()
+cycle_continue()
+    
+function bold_last(){
+    document.getElementById({{round}}).style.fontWeight = "800";
+}
+bold_last()
+
+function resultsVis(){
+    if (({{bin_own}} == 1 ) && ( {{bin_other}} == 1 )) {
+        document.getElementById("OGreen1").style.backgroundColor = "#d9f2d9";
+        document.getElementById("Red2").style.backgroundColor = "#d9f2d9";
+
+        document.getElementById("Green1").style.backgroundColor = "#d9f2d9";
+        document.getElementById("Green3").style.backgroundColor = "#d9f2d9";
+
+        document.getElementById("Green2").style.backgroundColor = "#cecece";
+        document.getElementById("Green2").style.fontWeight = "800";
+        document.getElementById("Green2").style.border = "3px solid #000";
+        document.getElementById("OGreen1").style.borderBottom = "3px solid #000";
+    }
+    if (( {{bin_own}} == 1 ) && ( {{bin_other}} == 2 )) {
+        document.getElementById("ORed1").style.backgroundColor = "#ffd6cc";
+        document.getElementById("Red3").style.backgroundColor = "#ffd6cc";
+
+        document.getElementById("Green1").style.backgroundColor = "#d9f2d9";
+        document.getElementById("Green2").style.backgroundColor = "#d9f2d9";
+        
+        document.getElementById("Green3").style.backgroundColor = "#cecece";
+        document.getElementById("Green3").style.fontWeight = "800";
+        document.getElementById("Green3").style.border = "3px solid #000";
+        document.getElementById("ORed1").style.borderBottom = "3px solid #000";
+    }
+    if (( {{bin_own}} == 2 ) && ( {{bin_other}} == 1 )) {
+        document.getElementById("OGreen1").style.backgroundColor = "#d9f2d9";
+        document.getElementById("Green2").style.backgroundColor = "#d9f2d9";
+
+        document.getElementById("Red1").style.backgroundColor = "#ffd6cc";
+        document.getElementById("Red3").style.backgroundColor = "#ffd6cc";
+
+        document.getElementById("Red2").style.backgroundColor = "#cecece";
+        document.getElementById("Red2").style.fontWeight = "800";
+        document.getElementById("Red2").style.border = "3px solid #000";
+        document.getElementById("Green2").style.borderBottom = "3px solid #000";
+    }
+    if (( {{bin_own}} == 2 ) && ( {{bin_other}} == 2 )) {
+        document.getElementById("ORed1").style.backgroundColor = "#ffd6cc";
+        document.getElementById("Green3").style.backgroundColor = "#ffd6cc";
+
+        document.getElementById("Red1").style.backgroundColor = "#ffd6cc";
+        document.getElementById("Red2").style.backgroundColor = "#ffd6cc";
+        
+        document.getElementById("Red3").style.backgroundColor = "#cecece";
+        document.getElementById("Red3").style.fontWeight = "800";
+        document.getElementById("Red3").style.border = "3px solid #000";
+        document.getElementById("Green3").style.borderBottom = "3px solid #000";
+    }
+    }
+resultsVis()
+
+function histVis(){
+    document.getElementById("_dec").style.backgroundColor = "#F0F8FF";
+    document.getElementById("_other_dec").style.backgroundColor = "#FFF5EE";
+}
+
+function textColor(){
+    document.getElementById("Red").style.color = "red";
+    document.getElementById("Green").style.color = "green";
+}
+
+function f_color(x){
+    if (document.getElementById(x).value = "Green"){
+        document.getElementById(x).style.color = "red";
+    }}
+
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'global/matrix.css' %}" />
+
+    <style>
+        .highlight-row-on-hover:hover td {
+            background-color: #fcf8e3;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+<head><h1 align="center" >End of Cycle Summary</h1></head>
+
+<hr>
+
+<div class="container">
+    <div style="float:left; width:55%">
+        <table class="table text-center" style="border: 2px solid black; width: auto; margin: auto; background-color:#F0F8FF">
+        <tr>
+            <th colspan="5"><span><h3>Part: 1 - Cycle: {{cycle}}</h3></span></th>
+        </tr>
+        <tr>
+            <th><span>Round</span></th>
+            <th>Your Action</th>
+            <th>Other's Action</th>
+            <th>Your Payoff</th>
+            <th>Die Roll</th>
+        </tr>
+        
+        {% for p in player_in_all_rounds %}
+            <tr>
+                <td>{{p.p1_round}}</td>
+                <td>{{p.decision}}</td>
+                <td>{{p.other_decision}}</td>
+                <td>{{p.payoff}}</td>
+                <td>{{p.die_roll}}</td>
+            </tr>
+        {% endfor %}
+
+        </table>
+    </div>
+
+    <div class="form-group required" style="float:right; width:40%">
+        <p> Your history from <b> Cycle {{cycle}} </b> is displayed to the left. This table shows your action, the other's actions, and your payoff in each round. </p>
+        <p> In this cycle, <b> Round {{round}} </b> is the last round and counts toward payment. </p>
+        <p> If this cycle is selected for final payment you will earn <b>{{ payoff }}</b>. </p>
+        <p> Click next to continue. </p>
+        {% next_button %}
+    </div>
+<div style="clear:both; font-size:1px;"></div>
+</div>
+
+{% endblock %}

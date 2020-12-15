@@ -1,0 +1,44 @@
+class New_Cycle(WaitPage):
+    # RUNS BEFORE A NEW CYCLE
+    # 1. RANDOMIZES GROUPS
+    # 2. UPDATES NEW CYCLE VARIABLES
+      # 2.1 SETS CYCLE TO +1
+      # 2.2 SETS ROUND TO 1
+    wait_for_all_groups = True
+
+    def is_displayed(self):
+        p = self.subsession.get_players()[0]
+        if self.subsession.round_number > 1:
+            return (max(Constants.die[p.participant.vars['cycle']-1][:p.participant.vars['round']+1]) > 75) & (p.participant.vars['round']+1 > 2)
+
+    def after_all_players_arrive(self):
+        p = self.subsession.get_players()[0]
+        print(' ')
+        print('New_Cycle')
+        print('  RUNNING - Randomizing')
+        self.subsession.randomize_group()
+        for p in self.subsession.get_players():
+            p.new_cycle()
+        print('Round Number: ',self.subsession.round_number)
+        print('Round: ',p.round)
+        print('Cycle: ',p.cycle)
+        print('Group 1 (update): ',self.subsession.get_groups()[0].get_players())
+        print('Group 2 (update): ', self.subsession.get_groups()[1].get_players())
+
+class Pre_Round_Page(WaitPage):
+    # 1. SETS THE GROUPS BASED ON THE LAST ROUND
+    # 2. UPDATES VARIABLES EACH ROUND
+    wait_for_all_groups = True
+
+    def after_all_players_arrive(self):
+        if self.player.round > 1:
+            self.subsession.group_like_round(self.subsession.round_number-1)
+        print(' ')
+        print('Pre_Round_Page')
+        for p in self.subsession.get_players():
+            p.update_vars()
+        print('Round Number: ',self.subsession.round_number)
+        print('Round: ',self.subsession.get_players()[0].round)
+        print('Cycle: ',self.subsession.get_players()[0].cycle)
+        print('Group 1: ',self.subsession.get_groups()[0].get_players())
+        print('Group 2: ', self.subsession.get_groups()[1].get_players())

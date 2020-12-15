@@ -1,0 +1,189 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'global/matrix.css' %}" />
+
+    <style>
+        .highlight-row-on-hover:hover td {
+            background-color: #fcf8e3;
+        }
+        .red {background-color: #f66666;}
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+<head><h1 align="center" >Cycle: {{cycle}} -- Round: {{round}}</h1></head>
+
+<hr>
+
+<div class="container">
+    <div style="float:left;width:30%">
+        <table class="table table-bordered text-center" style="width: auto; margin: auto">
+        <tr>
+            <th colspan="6"><span><h3>Your Past Results</h3></th>
+        </tr>
+        <tr>
+            <th><span>Round</span></th>
+            <th>Your Action</th>
+            <th>Other's Action</th>
+            <th>Your Payoff</th>
+            <th id="die_roll" style="display:none">Die Roll</th>
+        </tr>
+        
+        {% for p in player_in_all_rounds %}
+            <tr>
+                <td>{{p.round}}</td>
+                <td>{{p.decision}}</td>
+                <td>{{p.other_decision}}</td>
+                <td>{{p.payoff}}</td>
+                <td id={{p.round}} style="display:none">{{p.die_roll}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+
+    <div style="float:center;width:5%">
+    </div>
+    
+    <div class="form-group required" style="float:right;width:60%">
+        <table class="table table-bordered text-center" style="width: auto; margin: auto">
+            <tr>
+                <th colspan="4"><span><h3>Your Decision This Round</h3></th>
+            </tr>
+            <tr>
+                <th colspan="2" rowspan="2">
+                    <div id="confirmA" style="display:none">
+                        <button name="decision" value="A" class="btn red"> Confirm H</button>
+                    </div>
+                    <div id="confirmB" style="display:none">
+                        <button name="decision" value="B" class="btn red"> Confirm L</button>
+                    </div>
+                </th>
+                <th colspan="2">The Other's Choice</th>
+            </tr>
+            <tr>
+                <th>H</th>
+                <th>L</th>
+
+            </tr>
+
+            <tr class="highlight-row-on-hover">
+                <th rowspan="2" valign="middle">Your Choice</th>
+                    <div>
+                        <td onmouseover="" style="cursor: pointer;" id="A1" onclick="colorA();"><b>H</b></td>
+                    </div>
+
+                <td class="highlight-row-on-hover" onmouseover="" style="cursor: pointer;" id="A2" onclick="colorA()">{{Constants.cooperate_payoff}}, {{Constants.cooperate_payoff}}</td>
+                <td class="highlight-row-on-hover" onmouseover="" style="cursor: pointer;" id="A3" onclick="colorA()">{{ Constants.betrayed_payoff }}, {{Constants.betray_payoff}}</td>
+            </tr>
+            <tr class="highlight-row-on-hover" onmouseover="" style="cursor: pointer;">
+                    <div>
+                        <td id="B1" onclick="colorB();"><b>L</b></td>
+                    </div>
+                <td id="B2" onclick="colorB();">{{Constants.betray_payoff}}, {{ Constants.betrayed_payoff }}</td>
+                <td id="B3" onclick="colorB();">{{Constants.defect_payoff}}, {{Constants.defect_payoff}}</td>
+            </tr>
+        </table>
+    </div>
+<div style="clear:both; font-size:1px;"></div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+
+function applyColor(el){
+    el.style.backgroundColor = "#F0F8FF";
+    }
+function removeColor(el){
+    el.style.backgroundColor = "#ffffff";
+    }
+
+function colorA(){
+    var el1 = document.getElementById("A1");
+    var el2 = document.getElementById("A2");
+    var el3 = document.getElementById("A3");
+    applyColor(el1)
+    applyColor(el2)
+    applyColor(el3)
+    hide_confirmB()
+    show_confirmA()
+    var el4 = document.getElementById("B1");
+    var el5 = document.getElementById("B2");
+    var el6 = document.getElementById("B3");
+    removeColor(el4)
+    removeColor(el5)
+    removeColor(el6)
+    }
+
+function colorB(){
+    var el1 = document.getElementById("B1");
+    var el2 = document.getElementById("B2");
+    var el3 = document.getElementById("B3");
+    applyColor(el1)
+    applyColor(el2)
+    applyColor(el3)
+    hide_confirmA()
+    show_confirmB()
+    var el4 = document.getElementById("A1");
+    var el5 = document.getElementById("A2");
+    var el6 = document.getElementById("A3");
+    removeColor(el4)
+    removeColor(el5)
+    removeColor(el6)
+    }
+
+function show(){
+     if ({{round}} > 2) {return "table-cell"}}
+
+document.getElementById("die_roll").style.display = show()
+
+document.getElementById("1").style.display = show()
+document.getElementById("2").style.display = show()
+document.getElementById("3").style.display = show()
+document.getElementById("4").style.display = show()
+document.getElementById("5").style.display = show()
+document.getElementById("6").style.display = show()
+document.getElementById("7").style.display = show()
+document.getElementById("8").style.display = show()
+document.getElementById("9").style.display = show()
+document.getElementById("10").style.display = show()
+document.getElementById("11").style.display = show()
+document.getElementById("12").style.display = show()
+              
+function hide_confirmA()
+    {var div = document.getElementById("confirmA");
+        if (div.style.display == "block") {
+            div.style.display = "none";}
+        }
+function hide_confirmB()
+    {var div = document.getElementById("confirmB") ;
+        if (div.style.display == "block") {
+            div.style.display = "none";}
+        }
+function show_confirmA()
+    {var div = document.getElementById("confirmA");
+        if (div.style.display == "none") {
+            div.style.display = "block";}
+        }
+function show_confirmB()
+    {var div = document.getElementById("confirmB") ;
+        if (div.style.display == "none") {
+            div.style.display = "block";}
+        }
+function groupA()
+    {show_confirmA();
+     hide_confirmB()
+        }
+function groupB()
+    {hide_confirmA();
+     show_confirmB();
+        }
+</script>
+{% endblock %}

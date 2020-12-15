@@ -1,0 +1,153 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'global/matrix.css' %}" />
+
+    <style>
+        .highlight-row-on-hover:hover td {
+            background-color: #fcf8e3;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+<head><h1 align="center" >Cycle: {{cycle}} -- Round: {{round}}</h1></head>
+
+<hr>
+
+<div class="container">
+    <div style="float:left;width:30%">
+        <table class="table table-bordered text-center" style="width: auto; margin: auto">
+        <tr>
+            <th colspan="5"><span><h3>Your History</h3></span></th>
+        </tr>
+        <tr>
+            <th><span>Round</span></th>
+            <th>Your Action</th>
+            <th>Other's Action</th>
+            <th>Your Payoff</th>
+            <th id="die_roll" style="display:none">Die Roll</th>
+        </tr>
+        
+        {% for p in player_in_all_rounds %}
+            <tr>
+                <td>{{p.round}}</td>
+                <td>{{p.decision}}</td>
+                <td>{{p.other_decision}}</td>
+                <td>{{p.payoff}}</td>
+                <td id={{p.round}} style="display:none">{{p.die_roll}}</td>
+            </tr>
+        {% endfor %}
+
+        </table>
+    </div>
+
+    <div style="float:center;width:5%">
+    </div>
+    
+    <div class="form-group required" style="float:right;width:65%">
+        <table class="table table-bordered text-center" style="width: auto; margin: auto">
+            <tr>
+                <th colspan="4"><span><h3>Outcome in This Round</h3></th>
+            </tr>
+            <tr>
+                <th colspan="2" rowspan="2"></th>
+                <th colspan="2">The Other's Choice</th>
+            </tr>
+            <tr>
+                <th id="OA1">H</th>
+                <th id="OB1">L</th>
+            </tr>
+            <tr>
+                <th rowspan="2" valign="middle">Your Choice</th>
+                <td id="A1"><b>H</b></td>
+                <td id="A2">{{Constants.cooperate_payoff}}, {{Constants.cooperate_payoff}}</td>
+                <td id="A3">{{ Constants.betrayed_payoff }}, {{Constants.betray_payoff}}</td>
+            </tr>
+            <tr>
+                <td id="B1"><b>L</b></td>
+                <td id="B2">{{Constants.betray_payoff}}, {{ Constants.betrayed_payoff }}</td>
+                <td id="B3">{{Constants.defect_payoff}}, {{Constants.defect_payoff}}</td>
+            </tr>
+        </table>
+    </div>
+<div style="clear:both; font-size:1px;"></div>
+{% next_button %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+    
+function resultsVis(){
+    if (({{bin_own}} == 1 ) && ( {{bin_other}} == 1 )) {
+        document.getElementById("OA1").style.backgroundColor = "#FFF5EE";
+        document.getElementById("B2").style.backgroundColor = "#FFF5EE";
+
+        document.getElementById("A1").style.backgroundColor = "#F0F8FF";
+        document.getElementById("A3").style.backgroundColor = "#F0F8FF";
+
+        document.getElementById("A2").style.backgroundColor = "#AAAAAA";
+    }
+    if (( {{bin_own}} == 1 ) && ( {{bin_other}} == 2 )) {
+        document.getElementById("OB1").style.backgroundColor = "#FFF5EE";
+        document.getElementById("B3").style.backgroundColor = "#FFF5EE";
+
+        document.getElementById("A1").style.backgroundColor = "#F0F8FF";
+        document.getElementById("A2").style.backgroundColor = "#F0F8FF";
+        
+        document.getElementById("A3").style.backgroundColor = "#AAAAAA";
+    }
+    if (( {{bin_own}} == 2 ) && ( {{bin_other}} == 1 )) {
+        document.getElementById("OA1").style.backgroundColor = "#FFF5EE";
+        document.getElementById("A2").style.backgroundColor = "#FFF5EE";
+
+        document.getElementById("B1").style.backgroundColor = "#F0F8FF";
+        document.getElementById("B3").style.backgroundColor = "#F0F8FF";
+
+        document.getElementById("B2").style.backgroundColor = "#AAAAAA";
+    }
+    if (( {{bin_own}} == 2 ) && ( {{bin_other}} == 2 )) {
+        document.getElementById("OB1").style.backgroundColor = "#FFF5EE";
+        document.getElementById("A3").style.backgroundColor = "#FFF5EE";
+
+        document.getElementById("B1").style.backgroundColor = "#F0F8FF";
+        document.getElementById("B2").style.backgroundColor = "#F0F8FF";
+        
+        document.getElementById("B3").style.backgroundColor = "#AAAAAA";
+    }
+    }    
+resultsVis()
+    
+function histVis(){
+    document.getElementById("_dec").style.backgroundColor = "#F0F8FF";
+    document.getElementById("_other_dec").style.backgroundColor = "#FFF5EE";
+}
+
+
+function show(){
+    if ({{round}} > 2) {return "table-cell"}}
+    
+document.getElementById("die_roll").style.display = show()
+
+document.getElementById("1").style.display = show()
+document.getElementById("2").style.display = show()
+document.getElementById("3").style.display = show()
+document.getElementById("4").style.display = show()
+document.getElementById("5").style.display = show()
+document.getElementById("6").style.display = show()
+document.getElementById("7").style.display = show()
+document.getElementById("8").style.display = show()
+document.getElementById("9").style.display = show()
+document.getElementById("10").style.display = show()
+document.getElementById("11").style.display = show()
+document.getElementById("12").style.display = show()
+
+</script>
+{% endblock %}
